@@ -15,8 +15,13 @@ first_name = input('Enter first_name: ')
 last_name = input('Enter last_name: ') 
 email = input('Enter email: ')
 password = input('Enter password: ')
-if not first_name and not last_name and not email and not password:
-	print('please fill first first_name')
+
+if first_name =="" or first_name+None:
+    print("Please enter first name")
+# if not first_name and not last_name and not email and not password:
+if last_name =="" or last_name+None:
+     print("Please enter last name")
+
 url = f"{BASE_URL}/api/sign-up"
 data = {"first_name":first_name,"last_name":last_name,"email":email,"username":email,"password":password}
 response = requests.post(url,data = data)
