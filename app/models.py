@@ -12,8 +12,8 @@ import datetime
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    description = models.TextField()
-    image = models.FileField(upload_to='images/')
+    description = models.TextField(null=True,blank=True)
+    image = models.FileField(upload_to='images/',null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

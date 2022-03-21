@@ -24,15 +24,27 @@ class RegisterSerializer(serializers.ModelSerializer):
             user = User.objects.create_user(username=validated_data['username'], email=validated_data['email'], password = validated_data['password'],first_name=validated_data['first_name'], last_name=validated_data['last_name'])
             return user
         except Exception as e:
-            print(e)
-            raise CustomException("Something went wrong...!!!")
+            raise CustomException(str(e))
 
 
+class GetPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = "__all__"
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = "__all__"
+        fields = ['title','description','image']
+
+    def create(self, validated_data):
+        try:
+            user = self.context["request"].user
+            validated_data.update({'user':user})
+            post = Post.objects.create(**validated_data)
+            return post
+        except Exception as e:
+            raise CustomException(str(e))
         
         
 class FavoritePostSerializer(serializers.ModelSerializer):

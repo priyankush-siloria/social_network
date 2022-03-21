@@ -3,7 +3,7 @@ from urllib import response
 from django.shortcuts import render
 
 from rest_framework.views import APIView
-from .serializer import RegisterSerializer, FavoritePostSerializer, PostSerializer
+from .serializer import RegisterSerializer, FavoritePostSerializer, PostSerializer, GetPostSerializer
 from django.contrib.auth.models import User
 from rest_framework import status
 from response_messages.status_messages import response_status
@@ -37,7 +37,7 @@ class AllPost(APIView):
         response = {}
         try:
             posts = Post.objects.all()
-            serializer = PostSerializer(posts, many=True)
+            serializer = GetPostSerializer(posts, many=True)
             response["status"] = status.HTTP_200_OK
             response["data"] = serializer.data
         except Exception as e:
@@ -55,7 +55,7 @@ class PostView(APIView):
         response = {}
         try:
             posts = Post.objects.all()
-            serializer = PostSerializer(posts, many=True)
+            serializer = GetPostSerializer(posts, many=True)
             response["status"] = status.HTTP_200_OK
             response["data"] = serializer.data
         except Exception as e:
@@ -67,7 +67,6 @@ class PostView(APIView):
     def post(self, request):
         response = {}
         try:
-            request.data.update({"user": request.user.id})
             serializer = PostSerializer(
                 data=request.data, context={"request": request}
             )
@@ -171,6 +170,7 @@ class LikeDislikeView(APIView):
     def post(self, request):
         response = {}
         try:
+            request.data_mutable = True
             request.data.update({"user": request.user.id})
             serializer = FavoritePostSerializer(data=request.data, context={"request": request})
             if serializer.is_valid():
