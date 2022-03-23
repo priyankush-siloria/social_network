@@ -170,7 +170,7 @@ class LikeDislikeView(APIView):
     def post(self, request):
         response = {}
         try:
-            request.data_mutable = True
+            request.data._mutable = True
             request.data.update({"user": request.user.id})
             serializer = FavoritePostSerializer(data=request.data, context={"request": request})
             if serializer.is_valid():

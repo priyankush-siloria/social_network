@@ -31,3 +31,6 @@ python manage.py test
 docker-compose up --build
 ```
 3. Service runs on (http://localhost:8000)
+
+## Bot
+1. Run Bot with command `python bot.py`
